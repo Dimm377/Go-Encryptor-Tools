@@ -10,19 +10,6 @@ A simple file encryptor and decryptor written in Go for personal use.
 - PBKDF2 key derivation with SHA-256 and 10,000 iterations
 - Secure random salt and nonce generation
 
-## Project Structure
-
-```
-Go-file-encryptor/
-├── .gitignore
-├── go.mod
-├── go.sum
-├── main.go
-├── README.md
-└── filecrypt/
-    └── filecrypt.go
-```
-
 ## Requirements
 
 - Go 1.21 or higher
