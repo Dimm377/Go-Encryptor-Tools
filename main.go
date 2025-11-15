@@ -1,12 +1,10 @@
 package main
 
 import (
+	"Go-Encryptor-Tools/filecrypt"
 	"bytes"
 	"fmt"
 	"os"
-
-	"Go-Encryptor-Tools/filecrypt"
-	"golang.org/x/term"
 )
 
 func main() {
@@ -88,23 +86,8 @@ func decryptHandle() {
 	fmt.Println("Your file decrypted successfully!")
 }
 
-func getPassword() []byte {
-	fmt.Print("Enter password: ")
-	password, _ := term.ReadPassword(0)
-	fmt.Println("\nconfirm password: ")
-	password2, _ := term.ReadPassword(0)
-	if !validatePassword(password, password2) {
-		fmt.Println("\nPasswords do not match, please try again")
-		return getPassword()
-	}
-	return password
-}
-
 func validatePassword(password1 []byte, password2 []byte) bool {
-	if !bytes.Equal(password1, password2) {
-		return false
-	}
-	return true
+	return bytes.Equal(password1, password2)
 }
 
 func fileExists(filePath string) bool {
