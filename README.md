@@ -1,4 +1,4 @@
-# Go File Encryptor
+# Go Encryptor Tools
 
 A simple file encryptor and decryptor written in Go for personal use.
 
@@ -14,13 +14,25 @@ A simple file encryptor and decryptor written in Go for personal use.
 
 - Go 1.21 or higher
 
+## ⚠️ Important Warning
+
+**This tool overwrites your original files during encryption and decryption.** Always keep backups of your important files before using this tool.
+
+## Platform Compatibility
+
+This application is cross-platform and works on Linux, Windows, and macOS. The Go code uses standard library functions that are compatible across platforms.
+
+## Testing
+
+This repository includes a dummy file (`img.jpg`) that you can use to test whether the encryption tool is working properly.
+
 ## Installation
 
 1. Clone the repository:
 
 ```bash
 git clone <your-repo-url>
-cd Go-file-encryptor
+cd Go-Encryptor-Tools
 ```
 
 2. Install dependencies:
@@ -51,13 +63,23 @@ go run . decrypt /path/to/file
 go build .
 
 # Show help
-./Go-file-encryptor help
+./Go-Encryptor-Tools help
 
 # Encrypt a file
-./Go-file-encryptor encrypt /path/to/file
+./Go-Encryptor-Tools encrypt /path/to/file
 
 # Decrypt a file
-./Go-file-encryptor decrypt /path/to/file
+./Go-Encryptor-Tools decrypt /path/to/file
+```
+
+### Example with included test file:
+
+```bash
+# Encrypt the included test image
+go run . encrypt img.jpg
+
+# Decrypt the image (use the same password as used for encryption)
+go run . decrypt img.jpg
 ```
 
 ## How it works

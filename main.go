@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"Go-file-encryptor/filecrypt"
+	"Go-Encryptor-Tools/filecrypt"
 	"golang.org/x/term"
 )
 

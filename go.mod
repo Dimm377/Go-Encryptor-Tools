@@ -1,6 +1,6 @@
-module Go-file-encryptor
+module Go-Encryptor-Tools
 
-go 1.25.3
+go 1.24.0
 
 require golang.org/x/term v0.37.0
 
