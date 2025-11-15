@@ -1,111 +1,121 @@
-# Go Encryptor Tools
+# Go File Encryptor
 
-A simple file encryptor and decryptor written in Go for personal use.
+A secure file encryption and decryption tool written in Go. This application provides a simple command-line interface for protecting files using strong encryption standards.
 
 ## Features
 
-- Encrypt files with password protection
-- Decrypt files using the correct password
-- Uses AES-256-GCM encryption for security
-- PBKDF2 key derivation with SHA-256 and 10,000 iterations
-- Secure random salt and nonce generation
+- **AES-256-GCM encryption**: Military-grade encryption standard
+- **PBKDF2 key derivation**: 10,000 iterations for strong password hashing
+- **Random salt and nonce generation**: Prevents rainbow table attacks
+- **Cross-platform support**: Works on Windows, Linux, and macOS
+- **Secure password input**: Passwords are hidden during entry
+- **Supports all file types**: Encrypt any file format
 
-## Requirements
+## Prerequisites
 
-- Go 1.21 or higher
-
-## ⚠️ Important Warning
-
-**This tool overwrites your original files during encryption and decryption.** Always keep backups of your important files before using this tool.
-
-## Platform Compatibility
-
-This application is cross-platform and works on Linux, Windows, and macOS. The Go code uses standard library functions that are compatible across platforms.
-
-## Testing
-
-This repository includes a dummy file (`img.jpg`) that you can use to test whether the encryption tool is working properly.
+- Go 1.16 or higher
+- Git (for cloning the repository)
 
 ## Installation
 
 1. Clone the repository:
-
-```bash
-git clone <your-repo-url>
-cd Go-Encryptor-Tools
-```
+   ```bash
+   git clone https://github.com/yourusername/Go-Encryptor-Tools.git
+   cd Go-Encryptor-Tools
+   ```
 
 2. Install dependencies:
-
-```bash
-go mod tidy
-```
+   ```bash
+   go mod tidy
+   ```
 
 ## Usage
 
-### Running directly:
+The tool provides three main commands:
 
+### Encrypt a file
 ```bash
-# Show help
+go run . encrypt [file_path]
+```
+
+### Decrypt a file
+```bash
+go run . decrypt [file_path]
+```
+
+### Show help
+```bash
 go run . help
-
-# Encrypt a file
-go run . encrypt /path/to/file
-
-# Decrypt a file
-go run . decrypt /path/to/file
 ```
 
-### Building and running:
+### Examples
 
+Encrypt a text file:
 ```bash
-# Build the application
-go build .
-
-# Show help
-./Go-Encryptor-Tools help
-
-# Encrypt a file
-./Go-Encryptor-Tools encrypt /path/to/file
-
-# Decrypt a file
-./Go-Encryptor-Tools decrypt /path/to/file
+go run . encrypt document.txt
 ```
 
-### Example with included test file:
-
+Decrypt the same file:
 ```bash
-# Encrypt the included test image
-go run . encrypt img.jpg
-
-# Decrypt the image (use the same password as used for encryption)
-go run . decrypt img.jpg
+go run . decrypt document.txt
 ```
 
-## How it works
+## Security Features
 
-1. **Encryption**:
+- **Encryption Algorithm**: AES-256-GCM (Galois/Counter Mode)
+- **Key Derivation**: PBKDF2 with SHA-256 hash function and 10,000 iterations
+- **Salt Generation**: 16-byte random salt for each encryption
+- **Nonce Generation**: 12-byte random nonce for each encryption
+- **Password Security**: Passwords are not echoed to the terminal during entry
 
+## Project Structure
+
+```
+Go-Encryptor-Tools/
+├── main.go                 # Main application entry point
+├── filecrypt/              # Encryption/decryption implementation
+│   └── filecrypt.go        # AES-256-GCM encryption functions
+├── password_default.go     # Password input for Linux/macOS
+├── password_windows.go     # Password input for Windows
+├── go.mod                  # Go module definition
+├── go.sum                  # Go module checksums
+└── README.md               # Project documentation
+```
+
+## How It Works
+
+1. **Encryption Process**:
    - A random 16-byte salt is generated
-   - Password is used with PBKDF2 to derive a 32-byte key
+   - PBKDF2 is used to derive a key from the password using the salt
    - A random 12-byte nonce is generated
-   - File content is encrypted using AES-256-GCM
-   - Final file format: [16-byte salt + 12-byte nonce + ciphertext]
+   - The file content is encrypted using AES-256-GCM
+   - The salt, nonce, and ciphertext are concatenated and written to the file
 
-2. **Decryption**:
-   - Salt and nonce are extracted from the beginning of the encrypted file
-   - Same PBKDF2 process is used with the provided password and extracted salt
-   - Ciphertext is decrypted using AES-256-GCM with the derived key and nonce
+2. **Decryption Process**:
+   - The salt, nonce, and ciphertext are extracted from the file
+   - The same PBKDF2 process is used to derive the key from your password
+   - AES-256-GCM decryption is performed on the ciphertext
+   - The original file content is restored
 
-## Security
+## Important Notes
 
-- Uses AES-256-GCM for authenticated encryption
-- PBKDF2 with 10,000 iterations for key derivation
-- SHA-256 as the hash function
-- Random salt and nonce for each encryption
-- Secure random number generation
-- Support all file type
+- The original file will be overwritten with encrypted/decrypted content
+- **Always keep a backup** of important files before encryption
+- Losing your password will result in permanent data loss
+- This tool was created for personal use only
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-This project is for learn and personal use, and free for use and contrib
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+If you encounter any issues or have questions, please open an issue in the GitHub repository.
