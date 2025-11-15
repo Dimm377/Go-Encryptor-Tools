@@ -1,4 +1,4 @@
-module github.com/akhilsharma90/go-file-encryption
+module Go-file-encryptor
 
 go 1.25.3
 
