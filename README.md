@@ -68,20 +68,6 @@ go run . decrypt document.txt
 - **Nonce Generation**: 12-byte random nonce for each encryption
 - **Password Security**: Passwords are not echoed to the terminal during entry
 
-## Project Structure
-
-```
-Go-Encryptor-Tools/
-├── main.go                 # Main application entry point
-├── filecrypt/              # Encryption/decryption implementation
-│   └── filecrypt.go        # AES-256-GCM encryption functions
-├── password_default.go     # Password input for Linux/macOS
-├── password_windows.go     # Password input for Windows
-├── go.mod                  # Go module definition
-├── go.sum                  # Go module checksums
-└── README.md               # Project documentation
-```
-
 ## How It Works
 
 1. **Encryption Process**:
