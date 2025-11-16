@@ -88,6 +88,7 @@ go run . decrypt testing.txt
 - The original file will be overwritten with encrypted/decrypted content
 - **Always keep a backup** of important files before encryption
 - Losing your password will result in permanent data loss
+- Make sure you remember the password you entered
 - This tool was created for personal use only
 
 ## Contributing
