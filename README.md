@@ -52,12 +52,12 @@ go run . help
 
 Encrypt a text file:
 ```bash
-go run . encrypt document.txt
+go run . encrypt testing.txt
 ```
 
 Decrypt the same file:
 ```bash
-go run . decrypt document.txt
+go run . decrypt testing.txt
 ```
 
 ## Security Features
