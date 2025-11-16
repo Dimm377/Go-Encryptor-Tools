@@ -13,7 +13,7 @@ A secure file encryption and decryption tool written in Go. This application pro
 
 ## Prerequisites
 
-- Go 1.16 or higher
+- Go 1.16 or higher (https://go.dev/doc/install)
 - Git (for cloning the repository)
 
 ## Installation
