@@ -20,7 +20,7 @@ A secure file encryption and decryption tool written in Go. This application pro
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/Go-Encryptor-Tools.git
+   git clone https://github.com/Dimm377/Go-Encryptor-Tools.git
    cd Go-Encryptor-Tools
    ```
 
