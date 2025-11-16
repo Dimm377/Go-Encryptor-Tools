@@ -4,7 +4,7 @@ A secure file encryption and decryption tool written in Go. This application pro
 
 ## Features
 
-- **AES-256-GCM encryption**: Military-grade encryption standard
+- **AES-256-GCM encryption**: Industry standards encryption
 - **PBKDF2 key derivation**: Currently, it's 10,000 iterations, but I will increase it to 600,000 or higher soon for OWASP security standards.
 - **Random salt and nonce generation**: Prevents rainbow table attacks
 - **Cross-platform support**: Works on Windows, Linux, and macOS
@@ -91,14 +91,7 @@ go run . decrypt testing.txt
 - Make sure you remember the password you entered
 - This tool was created for personal use only
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 ## Support
 
 If you encounter any issues or have questions, please open an issue in the GitHub repository.
+
