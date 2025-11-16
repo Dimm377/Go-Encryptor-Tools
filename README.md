@@ -5,7 +5,7 @@ A secure file encryption and decryption tool written in Go. This application pro
 ## Features
 
 - **AES-256-GCM encryption**: Military-grade encryption standard
-- **PBKDF2 key derivation**: 10,000 iterations for strong password hashing
+- **PBKDF2 key derivation**: Currently, it's 10,000 iterations, but I will increase it to 600,000 or higher soon for OWASP security standards.
 - **Random salt and nonce generation**: Prevents rainbow table attacks
 - **Cross-platform support**: Works on Windows, Linux, and macOS
 - **Secure password input**: Passwords are hidden during entry
