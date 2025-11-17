@@ -6,28 +6,27 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"golang.org/x/term"
 	"os"
 	"strings"
+
+	"golang.org/x/term"
 )
 
 func getPassword() []byte {
 	fmt.Print("Enter password: ")
 
-	// Try to use terminal for password input (hiding characters)
+	//(hiding characters)
 	password, err := term.ReadPassword(int(os.Stdin.Fd()))
 
 	if err != nil {
-		// Fallback to regular input if terminal approach fails
-		fmt.Println() // Newline after prompt
+		fmt.Println() 
 		fmt.Print("Warning: Could not hide password input. Enter password: ")
 		reader := bufio.NewReader(os.Stdin)
 		passwordStr, _ := reader.ReadString('\n')
-		passwordStr = strings.TrimSpace(passwordStr) // Remove newline
-
+		passwordStr = strings.TrimSpace(passwordStr) 
 		fmt.Print("Confirm password: ")
 		confirmStr, _ := reader.ReadString('\n')
-		confirmStr = strings.TrimSpace(confirmStr) // Remove newline
+		confirmStr = strings.TrimSpace(confirmStr) 
 
 		if passwordStr != confirmStr {
 			fmt.Println("\nPasswords do not match, please try again")
