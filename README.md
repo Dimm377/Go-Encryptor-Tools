@@ -59,7 +59,8 @@ Decrypt the same file:
 ```bash
 go run . decrypt testing.txt
 ```
-<img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/4caecfa4-755f-4902-876a-896ca47fab18" />
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/4caecfa4-755f-4902-876a-896ca47fab18" />
+
 ## Security Features
 
 - **Encryption Algorithm**: AES-256-GCM (Galois/Counter Mode)
