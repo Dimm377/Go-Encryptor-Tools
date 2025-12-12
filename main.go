@@ -27,17 +27,60 @@ func main() {
 	}
 }
 
+func printBanner(mode string) {
+	const (
+		ColorBlue  = "\033[1;34m" // Bold Blue
+		ColorRed   = "\033[1;31m" // Bold Red for Decrypting
+		ColorGreen = "\033[1;32m" // Bold Green for Encrypting
+		ColorReset = "\033[0m"
+	)
+
+	var art string
+	var color string
+
+	switch mode {
+	case "EP": // Encrypting Process
+		color = ColorGreen
+		art = `
+    __               __   _                    
+   / /   ____  _____/ /__(_)___  ____ _        
+  / /   / __ \/ ___/ //_/ / __ \/ __ ` + "`" + `/        
+ / /___/ /_/ / /__/ ,< / / / / / /_/ / _ _ _ _ 
+/_____/\____/\___/_/|_/_/_/ /_/\__, (_|_|_|_|_)
+                              /____/           `
+	case "DP": // Decrypting Process
+		color = ColorRed
+		art = `
+    __  __      __           __   _                    
+   / / / /___  / /___  _____/ /__(_)___  ____ _        
+  / / / / __ \/ / __ \/ ___/ //_/ / __ \/ __ ` + "`" + `/        
+ / /_/ / / / / / /_/ / /__/ ,< / / / / / /_/ / _ _ _ _ 
+\____/_/ /_/_/\____/\___/_/|_/_/_/ /_/\__, (_|_|_|_|_)
+                                     /____/           `
+	default: // Main Menu / Default
+		color = ColorBlue
+		art = `
+   ______ ____                         __ 
+  / ____// __ \ ________  __  ______  / /_
+ / / __ / / / // ___/ __// / / / __ \/ __/
+/ /_/ // /_/ // /__/ /  / /_/ / /_/ / /_  
+\____/ \____/ \___/_/   \__, / .___/\__/  
+                       /____/_/           
+ 
+          v2.0 - Argon2id Edition`
+	}
+
+	fmt.Println(color + art + ColorReset)
+	fmt.Println("==================================================================")
+}
+
 func printHelp() {
-	fmt.Println("===========================================")
-	fmt.Println("          GO FILE ENCRYPTOR")
-	fmt.Println("    A Secure File Encryption Tool")
-	fmt.Println("===========================================")
+	printBanner("")
 	fmt.Println()
 	fmt.Println("A simple file encryptor and decryptor written in Go and for personal use only")
 	fmt.Println()
 	fmt.Println("Usage:")
 	fmt.Println("  go run . [command] [file_path]")
-	fmt.Println()
 	fmt.Println("Commands:")
 	fmt.Println("  encrypt [file]    Encrypt a file with password protection")
 	fmt.Println("  decrypt [file]    Decrypt a file using the correct password")
@@ -50,13 +93,14 @@ func printHelp() {
 	fmt.Println()
 	fmt.Println("Security Features:")
 	fmt.Println("  - AES-256-GCM encryption")
-	fmt.Println("  - PBKDF2 key derivation (10,000 iterations)")
+	fmt.Println("  - Argon2id key derivation (Time=1, Mem=64MB, Threads=4)")
 	fmt.Println("  - Random salt and nonce generation")
 	fmt.Println("  - Supports all file types")
 	fmt.Println("===========================================")
 }
 
 func encryptHandle() {
+	printBanner("EP")
 	if len(os.Args) < 3 {
 		fmt.Println("Please provide the path to the file to encrypt. for more info run the help command -> go run . help")
 		os.Exit(0)
@@ -72,6 +116,7 @@ func encryptHandle() {
 }
 
 func decryptHandle() {
+	printBanner("DP")
 	if len(os.Args) < 3 {
 		fmt.Println("Please provide the path to the file to decrypt. for more info run the help command -> go run . help")
 		os.Exit(0)

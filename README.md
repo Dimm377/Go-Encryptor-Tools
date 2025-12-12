@@ -1,11 +1,11 @@
-# Go File Encryptor
+# GOCRYPT
 
 A secure file encryption and decryption tool written in Go. This application provides a simple command-line interface for protecting files using strong encryption standards.
 
 ## Features
 
 - **AES-256-GCM encryption**: Industry standards encryption
-- **PBKDF2 key derivation**: Currently, it's 10,000 iterations, but I will increase it to 600,000 or higher soon for OWASP security standards.
+- **Argon2id key derivation**: Memory-hard key derivation function (Time=1, Memory=64MB, Threads=4) for modern security.
 - **Random salt and nonce generation**: Prevents rainbow table attacks
 - **Cross-platform support**: Works on Windows, Linux, and macOS
 - **Secure password input**: Passwords are hidden during entry
@@ -63,7 +63,8 @@ go run . decrypt testing.txt
 ## Security Features
 
 - **Encryption Algorithm**: AES-256-GCM (Galois/Counter Mode)
-- **Key Derivation**: PBKDF2 with SHA-256 hash function and 10,000 iterations
+- **Key Derivation**: Argon2id (Memory-hard function) with Time=1, Memory=64MB, Threads=4
+- **Backward Compatibility**: Files encrypted with previous versions (PBKDF2) are NOT compatible.
 - **Salt Generation**: 16-byte random salt for each encryption
 - **Nonce Generation**: 12-byte random nonce for each encryption
 - **Password Security**: Passwords are not echoed to the terminal during entry
