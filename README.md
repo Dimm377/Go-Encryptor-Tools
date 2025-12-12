@@ -61,15 +61,6 @@ go run . decrypt testing.txt
 ```
 <img width="600" alt="Image" src="https://github.com/user-attachments/assets/4caecfa4-755f-4902-876a-896ca47fab18" />
 
-## Security Features
-
-- **Encryption Algorithm**: AES-256-GCM (Galois/Counter Mode)
-- **Key Derivation**: Argon2id (Memory-hard function) with Time=1, Memory=64MB, Threads=4
-- **Backward Compatibility**: Files encrypted with previous versions (PBKDF2) are NOT compatible.
-- **Salt Generation**: 16-byte random salt for each encryption
-- **Nonce Generation**: 12-byte random nonce for each encryption
-- **Password Security**: Passwords are not echoed to the terminal during entry
-
 ## How It Works
 
 1. **Encryption Process**:
