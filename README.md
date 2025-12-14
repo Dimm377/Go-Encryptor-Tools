@@ -59,7 +59,6 @@ Decrypt the same file:
 ```bash
 go run . decrypt testing.txt
 ```
-<img width="600" alt="Image" src="https://github.com/user-attachments/assets/4caecfa4-755f-4902-876a-896ca47fab18" />
 
 ## How It Works
 
