@@ -1,4 +1,4 @@
-# GOCRYPT
+# GO-Encryptor
 
 A secure file encryption and decryption tool written in Go. This application provides a simple command-line interface for protecting files using strong encryption standards.
 
