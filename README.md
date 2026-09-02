@@ -1,89 +1,75 @@
-# GO-Encryptor
+# Go-Encryptor
 
-A secure file encryption and decryption tool written in Go. This application provides a simple command-line interface for protecting files using strong encryption standards.
+A small command-line tool for encrypting and decrypting files with Go. It is a personal-use project designed to make the encryption flow easy to inspect and understand.
 
 ## Features
 
-- **AES-256-GCM encryption**: Industry standards encryption
-- **Argon2id key derivation**: Memory-hard key derivation function (Time=1, Memory=64MB, Threads=4) for modern security.
-- **Random salt and nonce generation**: Prevents rainbow table attacks
-- **Cross-platform support**: Works on Windows, Linux, and macOS
-- **Secure password input**: Passwords are hidden during entry
-- **Supports all file types**: Encrypt any file format
+- AES-256-GCM authenticated encryption
+- Argon2id password-based key derivation
+- Random 16-byte salt and 12-byte nonce for every encryption
+- Hidden password input on supported terminals
+- Cross-platform source layout for Linux, macOS, and Windows
+- Atomic replacement through a temporary file
 
-## Prerequisites
+## Requirements
 
-- Go 1.16 or higher (https://go.dev/doc/install)
-- Git (for cloning the repository)
+- Go 1.24 or newer
+- Git
 
 ## Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Dimm377/Go-Encryptor-Tools.git
-   cd Go-Encryptor-Tools
-   ```
-
-2. Install dependencies:
-   ```bash
-   go mod tidy
-   ```
+```bash
+git clone https://github.com/Dimm377/Go-Encryptor.git
+cd Go-Encryptor
+go build -o go-encryptor .
+```
 
 ## Usage
 
-The tool provides three main commands:
+Encrypt a file:
 
-### Encrypt a file
 ```bash
-go run . encrypt [file_path]
+./go-encryptor encrypt path/to/file
 ```
 
-### Decrypt a file
+Decrypt a file:
+
 ```bash
-go run . decrypt [file_path]
+./go-encryptor decrypt path/to/file
 ```
 
-### Show help
+Show help:
+
 ```bash
-go run . help
+./go-encryptor help
 ```
 
-### Examples
+During encryption, the tool asks for a password and confirmation. During decryption, enter the same password.
 
-Encrypt a text file:
+## How it works
+
+1. Generate a random 16-byte salt.
+2. Derive a 32-byte key with Argon2id using time `1`, memory `64 MiB`, and `4` threads.
+3. Generate a random 12-byte AES-GCM nonce.
+4. Encrypt the file contents with AES-256-GCM.
+5. Write `salt || nonce || ciphertext` through a temporary file, then atomically replace the source file.
+
+Decryption derives the same key, authenticates the ciphertext, and restores the plaintext through the same temporary-file approach.
+
+## Important notes
+
+- The source file is replaced in place. Keep a separate backup before testing.
+- Losing the password means the encrypted contents cannot be recovered by this tool.
+- The project has not received a formal security audit and is intended for personal use and learning.
+- Do not treat this tool as a replacement for a mature, independently reviewed encryption utility.
+
+## Development
+
 ```bash
-go run . encrypt testing.txt
+go test ./...
+go vet ./...
 ```
 
-Decrypt the same file:
-```bash
-go run . decrypt testing.txt
-```
+## License
 
-## How It Works
-
-1. **Encryption Process**:
-   - A random 16-byte salt is generated
-   - PBKDF2 is used to derive a key from the password using the salt
-   - A random 12-byte nonce is generated
-   - The file content is encrypted using AES-256-GCM
-   - The salt, nonce, and ciphertext are concatenated and written to the file
-
-2. **Decryption Process**:
-   - The salt, nonce, and ciphertext are extracted from the file
-   - The same PBKDF2 process is used to derive the key from your password
-   - AES-256-GCM decryption is performed on the ciphertext
-   - The original file content is restored
-
-## Important Notes
-
-- The original file will be overwritten with encrypted/decrypted content
-- **Always keep a backup** of important files before encryption
-- Losing your password will result in permanent data loss
-- Make sure you remember the password you entered
-- This tool was created for personal use only
-
-## Support
-
-If you encounter any issues or have questions, please open an issue in the GitHub repository.
-
+No license is currently declared. All rights remain with the repository owner unless a license is added.
