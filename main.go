@@ -29,9 +29,9 @@ func main() {
 
 func printBanner(mode string) {
 	const (
-		ColorBlue  = "\033[1;34m" // Bold Blue
-		ColorRed   = "\033[1;31m" // Bold Red for Decrypting
-		ColorGreen = "\033[1;32m" // Bold Green for Encrypting
+		ColorBlue  = "\033[1;34m"
+		ColorRed   = "\033[1;31m"
+		ColorGreen = "\033[1;32m"
 		ColorReset = "\033[0m"
 	)
 
@@ -102,32 +102,42 @@ func printHelp() {
 func encryptHandle() {
 	printBanner("EP")
 	if len(os.Args) < 3 {
-		fmt.Println("Please provide the path to the file to encrypt. for more info run the help command -> go run . help")
-		os.Exit(0)
+		fmt.Println("Error: Please provide the path to the file to encrypt.")
+		os.Exit(1)
 	}
 	filePath := os.Args[2]
 	if !fileExists(filePath) {
-		panic("The file you are trying to encrypt does not exist")
+		fmt.Printf("Error: The file %q does not exist.\n", filePath)
+		os.Exit(1)
 	}
 	password := getPassword()
 	fmt.Println("\nEncrypting your file.....", filePath)
-	filecrypt.Encrypt(filePath, password)
+	err := filecrypt.Encrypt(filePath, password)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Encryption failed: %v\n", err)
+		os.Exit(1)
+	}
 	fmt.Println("Your file is fully protected!")
 }
 
 func decryptHandle() {
 	printBanner("DP")
 	if len(os.Args) < 3 {
-		fmt.Println("Please provide the path to the file to decrypt. for more info run the help command -> go run . help")
-		os.Exit(0)
+		fmt.Println("Error: Please provide the path to the file to decrypt.")
+		os.Exit(1)
 	}
 	filePath := os.Args[2]
 	if !fileExists(filePath) {
-		panic("The file you are trying to decrypt does not exist")
+		fmt.Printf("Error: The file %q does not exist.\n", filePath)
+		os.Exit(1)
 	}
 	password := getPassword()
 	fmt.Println("\nDecrypting your file.....", filePath)
-	filecrypt.Decrypt(filePath, password)
+	err := filecrypt.Decrypt(filePath, password)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Decryption failed: %v\n", err)
+		os.Exit(1)
+	}
 	fmt.Println("Your file decrypted successfully!")
 }
 

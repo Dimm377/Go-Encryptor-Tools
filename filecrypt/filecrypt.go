@@ -4,6 +4,8 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"errors"
+	"fmt"
 	"io"
 	"os"
 
@@ -18,25 +20,25 @@ const (
 	keyLen  = 32
 )
 
-func Encrypt(source string, password []byte) {
+func Encrypt(source string, password []byte) error {
 	if _, err := os.Stat(source); os.IsNotExist(err) {
-		panic(err.Error())
+		return err
 	}
 
 	srcFile, err := os.Open(source)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 	defer srcFile.Close()
 
 	plaintext, err := io.ReadAll(srcFile)
 	if err != nil {
-		panic(err.Error())
+		return fmt.Errorf("failed to read file: %w", err)
 	}
 
 	salt := make([]byte, 16)
 	if _, err := io.ReadFull(rand.Reader, salt); err != nil {
-		panic(err.Error())
+		return fmt.Errorf("failed to generate salt: %w", err)
 	}
 
 	// argon2.IDKey signature: []byte password, []byte salt, uint32 time, uint32 memory, uint8 threads, uint32 keyLen
@@ -44,17 +46,17 @@ func Encrypt(source string, password []byte) {
 
 	block, err := aes.NewCipher(derivedKey)
 	if err != nil {
-		panic(err.Error())
+		return fmt.Errorf("failed to create cipher: %w", err)
 	}
 
 	aesgcm, err := cipher.NewGCM(block)
 	if err != nil {
-		panic(err.Error())
+		return fmt.Errorf("failed to create GCM: %w", err)
 	}
 
 	nonce := make([]byte, aesgcm.NonceSize())
 	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
-		panic(err.Error())
+		return fmt.Errorf("failed to generate nonce: %w", err)
 	}
 
 	ciphertext := aesgcm.Seal(nil, nonce, plaintext, nil)
@@ -66,40 +68,42 @@ func Encrypt(source string, password []byte) {
 	tmpFile := source + ".tmp"
 	destFile, err := os.Create(tmpFile)
 	if err != nil {
-		panic(err.Error())
+		return fmt.Errorf("failed to create temp file: %w", err)
 	}
 	
 	if _, err := destFile.Write(result); err != nil {
 		destFile.Close()
 		os.Remove(tmpFile) // Clean up
-		panic(err.Error())
+		return fmt.Errorf("failed to write encrypted data: %w", err)
 	}
 	destFile.Close()
 
 	// Atomic rename
 	if err := os.Rename(tmpFile, source); err != nil {
-		panic(err.Error())
+		return fmt.Errorf("failed to rename temp file: %w", err)
 	}
+	
+	return nil
 }
 
-func Decrypt(source string, password []byte) {
+func Decrypt(source string, password []byte) error {
 	if _, err := os.Stat(source); os.IsNotExist(err) {
-		panic(err.Error())
+		return err
 	}
 
 	srcFile, err := os.Open(source)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 	defer srcFile.Close()
 
 	fileContent, err := io.ReadAll(srcFile)
 	if err != nil {
-		panic(err.Error())
+		return fmt.Errorf("failed to read file: %w", err)
 	}
 
 	if len(fileContent) < 16+12 {
-		panic("invalid file format: too short")
+		return errors.New("invalid file format: too short")
 	}
 
 	salt := fileContent[:16]
@@ -112,35 +116,37 @@ func Decrypt(source string, password []byte) {
 
 	block, err := aes.NewCipher(derivedKey)
 	if err != nil {
-		panic(err.Error())
+		return fmt.Errorf("failed to create cipher: %w", err)
 	}
 
 	aesgcm, err := cipher.NewGCM(block)
 	if err != nil {
-		panic(err.Error())
+		return fmt.Errorf("failed to create GCM: %w", err)
 	}
 
 	plaintext, err := aesgcm.Open(nil, nonce, actualCiphertext, nil)
 	if err != nil {
-		panic("decryption failed: " + err.Error())
+		return fmt.Errorf("decryption failed: %w", err)
 	}
 
 	// Safe write: write to temp file first
 	tmpFile := source + ".tmp"
 	destFile, err := os.Create(tmpFile)
 	if err != nil {
-		panic(err.Error())
+		return fmt.Errorf("failed to create temp file: %w", err)
 	}
 
 	if _, err := destFile.Write(plaintext); err != nil {
 		destFile.Close()
 		os.Remove(tmpFile)
-		panic(err.Error())
+		return fmt.Errorf("failed to write decrypted data: %w", err)
 	}
 	destFile.Close()
 
 	// Atomic rename
 	if err := os.Rename(tmpFile, source); err != nil {
-		panic(err.Error())
+		return fmt.Errorf("failed to rename temp file: %w", err)
 	}
+	
+	return nil
 }
