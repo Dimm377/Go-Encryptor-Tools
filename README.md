@@ -56,12 +56,13 @@ During encryption, the tool asks for a password and confirmation. During decrypt
 
 Decryption derives the same key, authenticates the ciphertext, and restores the plaintext through the same temporary-file approach.
 
-## Important notes
+## Technical Debt & Limitations
 
-- The source file is replaced in place. Keep a separate backup before testing.
-- Losing the password means the encrypted contents cannot be recovered by this tool.
-- The project has not received a formal security audit and is intended for personal use and learning.
-- Do not treat this tool as a replacement for a mature, independently reviewed encryption utility.
+- **Memory Exhaustion on Large Files:** The current implementation reads the entire file into memory (`io.ReadAll`). Encrypting or decrypting files larger than your available RAM will cause an Out-Of-Memory (OOM) crash.
+- **Argon2id Parameter Constraints:** The KDF parameters are currently hardcoded to `time=1` and `memory=64MB`. While weaker than RFC 9106 recommendations, changing these implicit parameters now would break decryption of existing files.
+- **Future v2 Architecture:** A future redesign should introduce a versioned file header (to safely upgrade KDF parameters) and authenticated chunked encryption with unique nonces (to support streaming large files without loading them entirely into memory).
+- **Not Production-Grade:** This tool has not been formally audited and is not suitable for enterprise or high-security production environments.
+- **In-Place Replacement:** The source file is replaced in place. Keep a separate backup before testing. Losing the password means the encrypted contents cannot be recovered.
 
 ## Development
 
